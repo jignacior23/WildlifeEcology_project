@@ -1,0 +1,97 @@
+---
+title: "Citizen Science and Biodiversity"
+author: "Juan Ignacio Ramirez"
+date: today
+format:
+  html:
+    toc: true
+    theme: cosmo
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Introduction
+
+These are species counts of large herbivores across Scandinavia.
+
+## Packages
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(knitr)
+```
+
+## Load and clean data
+
+```{r}
+wildlife <- read.csv(
+  "https://raw.githubusercontent.com/DrMattG/Open_wildlife_workshop/refs/heads/main/data_raw/wildlife_data.csv"
+)
+
+wildlife_clean <- wildlife %>%
+  filter(!is.na(count))
+
+```
+
+## Inspect data
+
+```{r}
+glimpse(wildlife_clean)
+```
+
+## Explore data
+
+```{r}
+glimpse(wildlife_clean)
+```
+
+## Summary
+
+```{r}
+summary(wildlife_clean$count)
+```
+
+## Species counts per habitat
+
+```{r}
+ggplot(
+  wildlife_clean,
+  aes(x = habitat, y = count)
+) +
+  geom_boxplot(fill = "lightblue") +
+  labs(
+    title = "Species Counts Across Habitats",
+    x = "Habitat",
+    y = "Observed Count"
+  ) +
+  theme_minimal()
+```
+
+## Average Counts per Habitat
+
+```{r}
+habitat_summary <- wildlife_clean %>%
+  group_by(habitat) %>%
+  summarise(
+    average_count = mean(count),
+    median_count = median(count),
+    max_count = max(count),
+    observations = n()
+  )
+habitat_summary
+```
+
+## Summary table
+
+```{r}
+kable(
+  habitat_summary,
+  caption = "Summary statistics by habitat"
+)
+```
