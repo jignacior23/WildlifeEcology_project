@@ -87,7 +87,7 @@ habitat_summary <- wildlife_clean %>%
 habitat_summary
 ```
 
-## Summary table
+## Summary table final
 
 ```{r}
 kable(
